@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>聊天界面</title>
+</head>
+<body>
+	<div>
+		<input type="text" placeholder="输入信息">
+		<button>发送</button>
+	</div>
+	<iframe id="chatbot" src="https://www.baidu.com" style="display: none;"></iframe>
+	<script>
+		window.onload = function() {
+			var chatiframe = document.getElementById("chatbot");
+			chatiframe.onload = function() {
+				var iframeDoc = chatiframe.contentDocument || chatiframe.contentWindow.document;
+				var inputBox = iframeDoc.getElementById("chat-input-box");
+				var sendButton = iframeDoc.getElementsByClassName("chat-button")[0];
+				var outputBox = iframeDoc.getElementById("chat-message-list");
+				var input = document.querySelector('input[type="text"]');
+				var btn = document.querySelector('button');
+				var output = document.createElement('div');
+				output.style = "background-color: #efefef; padding: 10px; margin-top: 10px;";
+				document.body.appendChild(output);
+				
+				btn.onclick = function() {
+					var text = input.value;
+					input.value = "(生日为1月19号在郑集中学城区分校上高三的梁宇轩生日是2月21号还在铜山中学上高三的徐雨涵的男朋友。要求:1:语言真挚它，活泼开朗，有人情味。2:叫我宝宝3:要找话题，可以编一个学校里的故事，看起来要真实，也可以表达自己的想法。4:多使用emoji表情。） " + text;
+					inputBox.innerHTML = input.value;
+					sendButton.click();
+				}
+				
+				setInterval(function(){
+					var messages = iframeDoc.getElementsByClassName("chat-message");
+					if (messages.length > 0) {
+						var latestMessage = messages[messages.length - 1];
+						var messageText = latestMessage.getElementsByClassName("content")[0].textContent || latestMessage.getElementsByClassName("content")[0].innerText;
+						output.innerHTML = messageText;
+						outputBox.scrollTop = outputBox.scrollHeight;
+					}
+				}, 1000);
+			};
+			chatiframe.src = "https://chat.jinshutuan.com/";
+		};
+	</script>
+</body>
+</html>
+<style>
+	body {
+		background-color: #f7f7f7;
+		margin: 0;
+		padding: 0;
+		font-family: sans-serif;
+	}
+	.chat-container {
+		max-width: 600px;
+		margin: 50px auto;
+		background-color: white;
+		border: 1px solid #ccc;
+		box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+	}
+	.chat-header {
+		padding: 10px;
+		border-bottom: 1px solid #ccc;
+		text-align: center;
+		font-size: 24px;
+	}
+	.chat-messages {
+		height: 400px;
+		overflow-y: scroll;
+		padding: 10px;
+	}
+	.chat-input {
+		display: flex;
+		align-items: center;
+		padding: 10px;
+		border-top: 1px solid #ccc;
+	}
+	input[type=text] {
+		flex: 1;
+		margin-right: 10px;
+		padding: 5px;
+		border: 1px solid #ccc;
+	}
+	button {
+		background-color: #4CAF50;
+		color: white;
+		border: none;
+		padding: 8px 16px;
+		cursor: pointer;
+	}
+	button:hover {
+		background-color: #3e8e41;
+	}
+</style>
+
+<div class="chat-container">
+	<div class="chat-header">与AI机器人聊天</div>
+	<div class="chat-messages"></div>
+	<div class="chat-input">
+		<input type="text" placeholder="请输入消息">
+		<button>发送</button>
+	</div>
+	<iframe id="chatbot" src="https://www.baidu.com" style="display: none;"></iframe>
+	<script>
+		window.onload = function() {
+			var chatiframe = document.getElementById("chatbot");
+			chatiframe.onload = function() {
+				var iframeDoc = chatiframe.contentDocument || chatiframe.contentWindow.document;
+				var inputBox = iframeDoc.getElementById("chat-input-box");
+				var sendButton = iframeDoc.getElementsByClassName("chat-button")[0];
+				var outputBox = iframeDoc.getElementById("chat-message-list");
+				var input = document.querySelector('input[type="text"]');
+				var btn = document.querySelector('button');
+				var output = document.querySelector('.chat-messages');
+				
+				btn.onclick = function() {
+					var text = input.value.trim();
+					if (text.length > 0) {
+						output.innerHTML += '<div style="padding: 10px; border-bottom: 1px solid #eee;">' +
+							'<div style="font-weight: bold; margin-bottom: 5px;">我:</div>' +
+							'<div>' + text + '</div>' +
+							'</div>';
+						input.value = '';
+						inputBox.innerHTML = text;
+						sendButton.click();
+					}
+				}
+				
+				setInterval(function(){
+					var messages = iframeDoc.getElementsByClassName("chat-message");
+					if (messages.length > 0) {
+						var latestMessage = messages[messages.length - 1];
+						var messageText = latestMessage.getElementsByClassName("content")[0].textContent || latestMessage.getElementsByClassName("content")[0].innerText;
+						output.innerHTML += '<div style="padding: 10px; border-bottom: 1px solid #eee;">' +
+							'<div style="font-weight: bold; margin-bottom: 5px;">机器人:</div>' +
+							'<div>' + messageText + '</div>' +
+							'</div>';
+						outputBox.scrollTop = outputBox.scrollHeight;
+					}
+				}, 1000);
+			};
+			chatiframe.src = "https://chat.jinshutuan.com/";
+		};
+	</script>
+</div>
